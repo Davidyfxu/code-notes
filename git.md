@@ -6,7 +6,9 @@
   git init
   #递交到暂存区
     git add demo.py
+    git add . #所有文件提交
     #递交到版本库
     git commit -m '描述'
+    
 ```
 
