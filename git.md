@@ -37,7 +37,8 @@
     #比较差异
     git diff
     
-    
+    #把本地代码push到repository
+    git push https://github.com/David-xyf/python-code.git
     
     
 ```
