@@ -47,7 +47,22 @@ msg = f'{first} [{last}] is a coder.'
 
 Python title() 方法返回"标题化"的字符串,就是说所有单词都是以大写开始，其余字母均为小写。
 
+#### Numpy运算
 
+```python
+m = np.array([[1,2,3],[4,5,6]])
+n = m * 0.25
 
+#  m*n 结果等于 np.multiply(m,n) 
+#  均为点乘，维度要一致
+```
 
+```python
+#矩阵相乘方法一： 不能用*代替np.matmul()
+np.matmul(a,b)
+#矩阵相乘方法二： 
+a.dot(b)
+##矩阵相乘方法三：
+a@b
+```
 

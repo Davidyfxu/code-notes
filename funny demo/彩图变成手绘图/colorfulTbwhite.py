@@ -1,12 +1,12 @@
 from PIL import Image
 import numpy as np
 
-Filename = 'hczz.jpg'
+Filename = 'fwh.png'
 a = np.asarray(Image.open(Filename).convert('F'))
 
 depth = 10.
 grad = np.gradient(a)
-grad_x , grad_y = grad
+grad_x, grad_y = grad
 grad_x = grad_x * depth/100
 grad_y = grad_y * depth/100
 A = np.sqrt(grad_x**2 + grad_y**2 + 1)
@@ -20,10 +20,9 @@ dx = np.cos(vec_el) * np.cos(vec_az)
 dy = np.cos(vec_el) * np.sin(vec_az)
 dz = np.sin(vec_el)
 
-b = 255 * ( dx*uni_x + dy*uni_y+dz*uni_z)
-b = b.clip(0,255)
+b = 255 * (dx*uni_x + dy*uni_y+dz*uni_z)
+b = b.clip(0, 255)
 
 im = Image.fromarray(b.astype('uint8'))
 Filename_output = Filename[0:-4] + '_output2.jpg'
 im.save(Filename_output)
-
