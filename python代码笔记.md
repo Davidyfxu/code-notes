@@ -66,3 +66,32 @@ a.dot(b)
 a@b
 ```
 
+#### 返回字典中频次最大的key值
+
+```python
+max(dic,key=lambda x:dic[x])
+max(dic,key=dic.get)
+```
+
+#### rand和randn区别
+
+```python
+np.random.rand() # 返回均匀分布的伪随机数.数值均匀分布在[0.1)间
+np.random.randn() # 返回标准正态分布的伪随机数.均值为0,方差为1
+```
+
+#### python函数注释规范
+
+我选择使用Google的python命名规范
+
+```python
+def add(a, b):
+    """
+    Calculate the sum of a and b
+    
+    :param a: a number
+    :param b: a number
+    :return: the sum
+    """
+```
+

@@ -1,0 +1,45 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: win-64
+asgiref=3.3.1=pyhd3eb1b0_0
+awesome-slugify=1.6.5=py_5
+ca-certificates=2020.12.8=haa95532_0
+certifi=2020.12.5=py38haa95532_0
+dj-database-url=0.5.0=pypi_0
+django=2.2.5=pypi_0
+django-braces=1.13.0=py_1
+django-heroku=0.3.1=pypi_0
+freetype=2.10.4=hd328e21_0
+importlib-metadata=2.0.0=py_1
+jpeg=9b=hb83a4c4_2
+krb5=1.17.1=hc04afaa_0
+libpng=1.6.37=h2a8f88b_0
+libpq=12.2=h3235a2c_0
+libtiff=4.1.0=h56a325e_1
+lz4-c=1.9.2=hf4a77e7_3
+markdown=3.3.3=py38haa95532_0
+olefile=0.46=py_0
+openssl=1.1.1i=h8ffe710_0
+pillow=8.0.1=py38h4fa10fc_0
+pip=20.3.3=py38haa95532_0
+psycopg2=2.8.5=py38hcd4344a_1
+python=3.8.3=he1778fa_2
+python_abi=3.8=1_cp38
+pytz=2020.4=pyhd3eb1b0_0
+redis=3.2.100=h81e342f_0
+regex=2020.11.13=py38h294d835_0
+setuptools=51.0.0=py38haa95532_2
+sorl-thumbnail=12.7.0=pyhd8ed1ab_0
+sqlite=3.33.0=h2a8f88b_0
+sqlparse=0.4.1=py_0
+tk=8.6.10=he774522_0
+unidecode=1.1.2=pyhd8ed1ab_0
+vc=14.2=h21ff451_1
+vs2015_runtime=14.27.29016=h5e58377_2
+wheel=0.36.2=pyhd3eb1b0_0
+whitenoise=5.2.0=pypi_0
+wincertstore=0.2=py38_0
+xz=5.2.5=h62dcd97_0
+zipp=3.4.0=pyhd3eb1b0_0
+zlib=1.2.11=h62dcd97_4
+zstd=1.4.5=h04227a9_0
