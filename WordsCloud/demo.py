@@ -11,7 +11,7 @@ with open('web.txt','r') as f:
     f.close()
 
 # 图片模板和字体
-image=np.array(Image.open('firstname.png'))
+image=np.array(Image.open('image.png'))
 
 
 # 关键一步

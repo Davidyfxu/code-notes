@@ -18,7 +18,7 @@ class Solution:
 
 ### 1.2  判断是否有环 141/142
 
-设置快慢指正
+设置快慢指针
 
 ```python
 class Solution:
