@@ -1,0 +1,13 @@
+<div class="blog">
+    <div class="blog-heading">
+        <div class="blog-title">
+            {{p.subject}}
+        </div>
+        <div class="blog-date">
+            {{p.created.strftime("%b %d, %Y")}}
+        </div>
+    </div>
+    <div class="blog-content">
+        {{p._render_text | safe}}
+    </div>
+</div>

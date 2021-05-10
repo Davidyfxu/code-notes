@@ -109,8 +109,6 @@ class MyQueue:
 
 ## 3. 优先队列
 
-
-
 ## 4. 哈希表
 
 ### 4.1 有效的字母异位词 242
@@ -223,16 +221,9 @@ def isValidBST(self, root: TreeNode) -> bool:
     def helper(root, Min=float('-inf'), Max=float('inf')):
         if root is None:
             return True
-
         if root.val <= Min or root.val >= Max:
             return False
-
-        if not helper(root.left, Min, root.val):
-            return False
-        if not helper(root.right, root.val, Max):
-            return False
-
-        return True
+        return helper(root.left, Min, root.val) and helper(root.right, root.val, Max)
     return helper(root)
 ```
 
@@ -246,14 +237,13 @@ def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -
     left = self.lowestCommonAncestor(root.left, p, q)
     right = self.lowestCommonAncestor(root.right, p, q)
 
-    if left == None:
+    if not left :
         return right
-    else:
-        return left if right == None else root
+    return left if not right else root
         
 # 二叉搜索树
 def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-    if root is None:
+    if not root:
         return []
     while root:
         if root.val > p.val and root.val > q.val:
@@ -344,7 +334,7 @@ def myPow(self, x: float, n: int) -> float:
         n, x = -n, 1/x
     if n % 2 == 1:
         return x*self.myPow(x, n-1)
-    return self.myPow(x*x, n/2)
+    return self.myPow(x*x, n//2)
 
     # 方法三 位运算+分治算法 速度最快
     if n == 0:
@@ -661,7 +651,7 @@ class Trie:
 
 
 
-### 11.2  二维网格中的单词搜索问题212
+### 11.2  二维网格中的单词·问题212
 
 ```python
 def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
@@ -863,7 +853,60 @@ def maxProduct(self, nums: List[int]) -> int:
 
 ### 13.4  股票买卖系列
 
+仅一次买卖
 
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        int cost=Integer.MAX_VALUE,profit = 0;
+        for(int price : prices){
+            cost = Math.min(cost, price);
+            profit = Math.max(profit, price-cost);
+        }
+        return profit;
+    }
+}
+```
+
+多次买卖
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        profits = [[0,0] for _ in range(len(prices))]
+        profits[0][1] = -prices[0] # 第0列表示未持有股票，第1列表示持有股票
+        for i in range(1,len(prices)):
+            profits[i][0] = max(profits[i-1][0], profits[i-1][1]+prices[i])
+            profits[i][1] = max(profits[i-1][1], profits[i-1][0]-prices[i])
+        return profits[-1][0]
+```
+
+多次买卖但含有冷冻期
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        dp = [[0,0,0] for _ in range(len(prices))]
+        dp[0][0] = -prices[0]
+        for i in range(1,len(prices)):
+            dp[i][0] = max(dp[i-1][0],dp[i-1][2]-prices[i]) # 当天持有股票
+            dp[i][1] = dp[i-1][0] + prices[i] # 当天卖出股票并进入冷冻期
+            dp[i][2] = max(dp[i-1][2],dp[i-1][1]) # 当天无持有股票，并走出冷冻期
+        return max(dp[-1][2],dp[-1][1])
+```
+
+多次买卖但有中介费
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        # base case 第0列表示当日买入股票，第1列表示无股票
+        profits = [[-prices[0],0]]+[[0,0] for _ in range(len(prices)-1)]
+        for i in range(1,len(prices)):
+            profits[i][0] = max(profits[i-1][0],profits[i-1][1]-prices[i])
+            profits[i][1] = max(profits[i-1][1],profits[i-1][0]+prices[i]-fee)
+        return profits[-1][1]
+```
 
 ### 13.5  最长上升子序列 300
 
@@ -881,7 +924,9 @@ def lengthOfLIS(self, nums: List[int]) -> int:
     return res
 ```
 
-### 13.6  零钱兑换 322
+### 13.6.1  零钱兑换 322
+
+完全背包问题
 
 ```python
 def coinChange(self, coins: List[int], amount: int) -> int:
@@ -898,6 +943,40 @@ def coinChange(self, coins: List[int], amount: int) -> int:
     return -1 if dp[amount] > amount else dp[amount]
 ```
 
+### 13.6.2 0-1背包问题
+
+```python
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        if not nums:
+            return False
+        total = sum(nums)
+        if total %2 != 0:
+            return False
+        target = total//2
+        # 方法一：dp二维
+        dp = [[False for _ in range(target+1)] for _ in range(len(nums))]
+
+        for i in range(len(dp)):
+            for j in range(len(dp[0])-1,-1,-1):
+                dp[i][j] = dp[i-1][j]
+                if nums[i]==j:
+                    dp[i][j] = True
+                elif nums[i] < j:
+                    dp[i][j] = dp[i-1][j] or dp[i-1][j-nums[i]]
+        return dp[-1][-1]
+
+        # 方法二：dp一维，优化空间
+        dp = [False for _ in range(target+1)]
+        for i in range(len(nums)):
+            for j in range(target,-1,-1):
+                if nums[i] == j:
+                    dp[j] = True
+                elif nums[i] < j:
+                    dp[j] = dp[j] or dp[j-nums[i]]
+        return dp[-1]
+```
+
 ### 13.7  编辑距离 72
 
 ```python
@@ -910,8 +989,13 @@ def minDistance(self, word1: str, word2: str) -> int:
 
     for i in range(1, len(word1)+1):
         for j in range(1, len(word2)+1):
-            word[i][j] = min(1+word[i-1][j], 1+word[i][j-1], word[i-1]
-                                [j-1]+(0 if word1[i-1] == word2[j-1] else 1))
+            if word1[i-1] == word2[j-1]:
+                word[i][j] = word[i-1][j-1]
+            else:
+                word[i][j] = 1+min(word[i-1][j], # 删除
+                                   word[i][j-1], # 插入
+                                   word[i-1][j-1] #替换
+                                  )
     return word[len(word1)][len(word2)]
 ```
 
@@ -965,3 +1049,133 @@ class QuickUnionUF:
 ### 15.1  设计和实现一个LRU Cache缓存机制
 
 ## 16. 布隆过滤器
+
+### 
+
+## 17. 回溯算法
+
+Backtracking
+
+```python
+res = []    # 定义全局变量保存最终结果
+state = []  # 定义状态变量保存当前状态
+p,q,r       # 定义条件变量（一般条件变量就是题目直接给的参数）
+def back(状态，条件1，条件2，……):
+    if # 不满足合法条件（可以说是剪枝）
+        return
+    elif # 状态满足最终要求
+        res.append(state)   # 加入结果
+        return 
+    # 主要递归过程，一般是带有 循环体 或者 条件体
+    for # 满足执行条件
+    if  # 满足执行条件
+        back(状态，条件1，条件2，……)
+back(状态，条件1，条件2，……)
+return res
+```
+
+```java
+void backtrack(TreeNode root,LinkedList<Integer> state) {
+        if (root != null) {
+            state.add(root.val);
+            if (root.left == null && root.right == null) {
+                res.add(new LinkedList<Integer>(state));
+            } else {
+                backtrack(root.left, new LinkedList<Integer>(state));
+                backtrack(root.right, new LinkedList<Integer>(state));
+            }
+        }
+    }
+```
+
+## 18. Leecode头文件
+
+### 二叉树
+
+```python
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+    }
+}
+```
+
+### 链表
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    def reversePrint(self, head: ListNode) -> List[int]:
+```
+
+```java
+/* 
+* public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+    }
+}
+```
+
+
+
+### 快排
+
+```python
+def quickSort(arr, left=None, right=None):
+    left = 0 if not isinstance(left,(int, float)) else left
+    right = len(arr)-1 if not isinstance(right,(int, float)) else right
+    if left < right:
+        partitionIndex = partition(arr, left, right)
+        quickSort(arr, left, partitionIndex-1)
+        quickSort(arr, partitionIndex+1, right)
+    return arr
+
+def partition(arr, left, right):
+    pivot = left
+    index = pivot+1
+    i = index
+    while  i <= right:
+        if arr[i] < arr[pivot]:
+            swap(arr, i, index)
+            index+=1
+        i+=1
+    swap(arr,pivot,index-1)
+    return index-1
+
+def swap(arr, i, j):
+    arr[i], arr[j] = arr[j], arr[i]
+```
+
+​                        
