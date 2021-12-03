@@ -1,5 +1,0 @@
-compressingScript.py文件说明
-
-将compressingScript.py文件放入某个含图片的文件夹目录中，可以直接压缩图片到compress/子目录中。
-
-也可采用硬编码方式记录要压缩的文件夹。
